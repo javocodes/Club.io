@@ -9,6 +9,7 @@ class Membership extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
     protected $fillable = ['student_id', 'organization_id'];
 
     public function User()

@@ -4,10 +4,10 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 
-class FormComponent extends Component
+class SearchBar extends Component
 {
     public function render()
     {
-        return view('livewire.form-component');
+        return view('livewire.search-bar');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MemberController;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Pages\AdvisorPagesController;
@@ -20,7 +21,7 @@ use App\Http\Controllers\Pages\WelcomeDashboardPagesController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/// Guest Routes////
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
@@ -44,20 +45,22 @@ Route::group(
         })->name('guest.forms');
     }
 );
+//////Organization Routes//////
+Route::group(
+    ['prefix' => 'organization', 'middleware' => ['auth', 'role:organization']],
+    function () {
+        Route::resource('/members', MemberController::class);
+    }
+);
+
+// Route::resource('/dashboard/members', MemberController::class)->middleware(['auth', 'role:organization']);
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', [$roles = [
+        'advisor', 'organization', 'admin', 'student'
+    ]]);
 })->middleware('auth', 'role:advisor,organization,admin,student')->name('dashboard');
 
-// Route::group(['middleware' => ['auth'], function () {
-//     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
-
-//     Route::resource('organization', OrganizationController::class)->middleware(['auth'])->names([
-//         'store' => 'orgregister'
-//     ]);
-// }]);
-
-//User Routes
 
 //Advisor Routes
 Route::group(
@@ -66,7 +69,7 @@ Route::group(
         Route::get('/dashboard/{user}', [AdvisorPagesController::class, 'DisplayDashboard'])->name('advisor.dashboard');
         Route::get('/event-requests/{user}', [AdvisorPagesController::class, 'DisplayEventRequests'])->name('event-requests');
         Route::get('/organization-members/{user}', [AdvisorPagesController::class, 'DisplayOrganizationMembers'])->name('organization-members');
-        Route::get('/create-organization/', [AdvisorPagesController::class, 'CreateOrganization'])->name('advisor.create.organization');
+        Route::get('/create-organization/{user}', [AdvisorPagesController::class, 'CreateOrganization'])->name('advisor.create.organization');
     }
 );
 
@@ -79,12 +82,6 @@ Route::group(
     }
 );
 
-// });
-
-// // Organization Routes
-// Route::group(['middleware' => ['auth', 'CheckUserRole']], function () {
-// Route::resource('organization', [OrganizationController::class])
-// ->names(['store' => 'orgregister']);
 // });
 
 require __DIR__ . '/auth.php';

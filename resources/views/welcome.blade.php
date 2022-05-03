@@ -17,9 +17,10 @@
                 style="background-image: url('https://images.pexels.com/photos/10646602/pexels-photo-10646602.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')">
                 <div class="bg-transparent flex p-8 items-center justify-center">
                     <div class="bg-transparent px-8">
-                        <input id="search"
+                        @livewire('search-bar')
+                        {{-- <input id="search"
                         class="text-sm leading-none focus:outline-none  border-2 rounded hover:border-10 border-purple-800 "
-                        type="text" placeholder="Search Events/Organizations.." />
+                        type="text" placeholder="Search Events/Organizations.." /> --}}
                     </div>
                 </div>
                 {{-- <div class="mt-8 w-1/2 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">

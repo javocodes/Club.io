@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Student;
 use App\Models\Advisor;
+use App\Models\Organization;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -28,6 +29,10 @@ class RegisteredUserController extends Controller
     {
         return view('auth.advisor-register');
     }
+    public function createOrganization()
+    {
+        return view('advisor.create-organization');
+    }
 
     /**
      * Handle an incoming registration request.
@@ -49,7 +54,7 @@ class RegisteredUserController extends Controller
             'address' => ['required', 'string'],
             'phone_no' => ['required'],
         ]);
-        // dd($request);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -65,7 +70,6 @@ class RegisteredUserController extends Controller
             'phone_no' => $request->phone_no
         ]);
 
-        // event(new Registered($user));
         event(new Registered($student));
 
         Auth::login($user);
@@ -104,6 +108,29 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
+        return redirect(RouteServiceProvider::HOME);
+    }
+
+    public function storeOrganization(Request $request)
+    {
+        $request->validate([
+            'student_card' => ['required', 'string', 'min:20', 'max:22'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'gender' => ['required'],
+            'dob' => ['required', 'date'],
+            'address' => ['required', 'string'],
+            'phone_no' => ['required'],
+        ]);
+
+        $organization = Organization::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        event(new Registered($organization));
         return redirect(RouteServiceProvider::HOME);
     }
 }
