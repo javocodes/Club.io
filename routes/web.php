@@ -10,6 +10,7 @@ use App\Http\Controllers\Pages\AdvisorPagesController;
 // use App\Http\Controllers\StudentPagesController;
 use App\Http\Controllers\Pages\StudentPagesController;
 use App\Http\Controllers\Pages\WelcomeDashboardPagesController;
+use App\Models\Organization;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,25 +27,21 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::group(
-    ['middleware' => ['guest']],
-    function () {
+Route::get('/events', function () {
+    return view('guest.events');
+})->name('guest.events');
 
-        Route::get('/events', function () {
-            return view('guest.events');
-        })->name('guest.events');
+Route::get('/organizations', function () {
+    $organizations = Organization::paginate(15);
+    return view('guest.organizations', ['organizations' => $organizations]);
+})->name('guest.organizations');
+Route::get('/news', function () {
+    return view('guest.news');
+})->name('guest.news');
+Route::get('/forms', function () {
+    return view('guest.forms');
+})->name('guest.forms');
 
-        Route::get('/organizations', function () {
-            return view('guest.organizations');
-        })->name('guest.organizations');
-        Route::get('/news', function () {
-            return view('guest.news');
-        })->name('guest.news');
-        Route::get('/forms', function () {
-            return view('guest.forms');
-        })->name('guest.forms');
-    }
-);
 //////Organization Routes//////
 Route::group(
     ['prefix' => 'organization', 'middleware' => ['auth', 'role:organization']],
@@ -59,7 +56,12 @@ Route::get('/dashboard', function () {
     return view('dashboard', [$roles = [
         'advisor', 'organization', 'admin', 'student'
     ]]);
-})->middleware('auth', 'role:advisor,organization,admin,student')->name('dashboard');
+})->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard', [$roles = [
+//         'advisor', 'organization', 'admin', 'student'
+//     ]]);
+// })->middleware('auth', 'role:advisor,organization,admin,student')->name('dashboard');
 
 
 //Advisor Routes

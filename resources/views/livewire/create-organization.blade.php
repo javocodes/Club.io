@@ -64,8 +64,38 @@
                                                 <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
                                             @enderror
                                         </div>
+                                        <div class="w-full py-2">
+                                            <label for="organizationDescription"
+                                                class="block text-sm font-medium text-gray-700"> Organization Description
+                                            </label>
+                                            <input wire:model.lazy="organizationDescription" type="text"
+                                                name="organizationDescription" id="organizationDescription"
+                                                class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                            @error('organizationDescription')
+                                                <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
+                                            @enderror
+                                        </div>
                                 </div>
                             @elseif ($currentPage === 2)
+                                <div class="w-full py-2">
+                                    <label for="orgEmail" class="block text-sm font-medium text-gray-700">Organization Email</label>
+                                    <input wire:model.lazy="orgEmail" type="orgEmail" name="orgEmail" id="orgEmail"
+
+                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    @error('email')
+                                        <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="w-full py-2">
+                                    <label for="orgPassword" class="block text-sm font-medium text-gray-700">Password</label>
+                                    <input wire:model.lazy="orgPassword" type="orgPassword" name="orgPassword" id="orgPassword"
+                                        class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                                    @error('orgPassword')
+                                        <span class="mt-1 text-xs text-red-500">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                            @elseif ($currentPage === 3)
                                 <div class="w-full py-2">
                                     <label for="memberName" class="block text-sm font-medium text-gray-700">Member
                                         Name</label>
@@ -86,7 +116,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        @elseif ($currentPage === 3)
+                        @elseif ($currentPage === 4)
                             <div class="flex flex-col">
                                 <div class="w-full py-2">
                                     <label for="studentCard" class="block text-sm font-medium text-gray-700">Student

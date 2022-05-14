@@ -4,23 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Organization;
+use App\Models\Request;
 
-class Request extends Model
+class Event extends Model
 {
     use HasFactory;
-
-    public function Event()
-    {
-        return $this->belongsTo(Event::class);
-    }
 
     public function Organization()
     {
         return $this->belongsTo(Organization::class);
     }
 
-    public function Advisor()
+    public function Request()
     {
-        return $this->belongsTo(Advisor::class);
+        return $this->belongsTo(Request::class);
     }
 }

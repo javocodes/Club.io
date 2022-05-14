@@ -5,6 +5,9 @@ namespace App\Http\Livewire;
 use Livewire\Component;
 use App\Models\Membership;
 use App\Models\Organization;
+use App\Models\Student;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class CreateOrganization extends Component
 {
@@ -13,13 +16,14 @@ class CreateOrganization extends Component
 
     // Form properties
     public $organizationName;
-    public $email;
-    public $password;
+    public $orgEmail;
+    public $organizationDescription;
+    public $orgPassword;
     public $organizationCategory;
     public $memberName;
+    public $memberDob;
     public $studentCard;
     public $memberPosition;
-    public $memberDob;
     // public $status;
 
     public $pages = [
@@ -28,10 +32,14 @@ class CreateOrganization extends Component
             'subheading' => 'Enter the organization name and the organization category to get started.',
         ],
         2 => [
+            'heading' => 'Account Information',
+            'subheading' => 'Enter the email and password for this organization.',
+        ],
+        3 => [
             'heading' => 'Personal Information',
             'subheading' => 'Add the student name and their date of birth.',
         ],
-        3 => [
+        4 => [
             'heading' => 'Membership Information',
             'subheading' => 'Add the student card and their position in the club to finish.',
         ],
@@ -41,13 +49,18 @@ class CreateOrganization extends Component
         1 => [
             'organizationName' => ['required', 'string', 'min:3'],
             'organizationCategory' => ['required', 'string', 'min:3'],
+            'organizationDescription' => ['required', 'string', 'min:3'],
         ],
 
         2 => [
-            'memberName' => ['required', 'string', 'min:3'],
-            'memberDob' => ['required'],
+            'orgEmail' => ['required', 'email'],
+            'orgPassword' => ['required'],
         ],
         3 => [
+            'memberName' => ['required', 'string', 'min:3'],
+            'memberDob' => ['required', 'date'],
+        ],
+        4 => [
             'studentCard' => ['required', 'string', 'min:20', 'max:22'],
             'memberPosition' => ['required', 'string', 'min:3'],
         ],
@@ -80,21 +93,35 @@ class CreateOrganization extends Component
 
         $this->validate($rules);
 
-        Organization::create([
+        $newOrg = Organization::create([
             'name' => $this->organizationName,
-
+            'email' => $this->orgEmail,
+            'password' => Hash::make($this->orgPassword),
+            'category' => $this->organizationCategory,
+            'description' => $this->organizationDescription
         ]);
 
+        $student = Student::where('student_card', $this->studentCard)->first()->pluck('id');
+        $student_id = $student->implode("", $student);
+
         Membership::create([
+            'student_id' => $student_id,
+            'organization_id' => $newOrg->id,
             'memberName' => $this->memberName,
-            'memberPosition' => $this->memberPosition,
             'memberDob' => $this->memberDob,
             'studentCard' => $this->studentCard,
+            'memberPosition' => $this->memberPosition,
+        ]);
+
+        $user = User::create([
+            'name' => $this->organizationName,
+            'email' => $this->orgEmail,
+            'password' => Hash::make($this->orgPassword),
+            'role_id' => 4,
         ]);
 
         $this->reset();
         $this->resetValidation();
-
         $this->success = 'Organization created successfully!';
     }
     public function render()

@@ -1,5 +1,4 @@
 <x-guest-layout>
-    <x-navbar/>
     <x-auth-card>
         <x-slot name="logo">
             <a href="/">
@@ -77,6 +76,10 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('advisor.register') }}">
+                    {{ __('Are you an advisor?') }}
+                </a>
+                <div class="px-4"></div>
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>

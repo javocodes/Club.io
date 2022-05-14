@@ -18,6 +18,8 @@ class Organization extends User
      */
     protected $fillable = [
         'name',
+        'category',
+        'description',
         'email',
         'password',
     ];
@@ -44,5 +46,15 @@ class Organization extends User
     public function Membership()
     {
         return $this->hasMany(Membership::class);
+    }
+
+    public function Event()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    public function Request()
+    {
+        return $this->hasMany(Request::class);
     }
 }

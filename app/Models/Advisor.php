@@ -20,4 +20,9 @@ class Advisor extends Model
     {
         return $this->hasOne(User::class);
     }
+
+    public function Request()
+    {
+        return $this->hasMany(Request::class);
+    }
 }

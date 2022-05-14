@@ -20,6 +20,8 @@ class OrganizationFactory extends Factory
     {
         return [
             'name' => $this->faker->company(),
+            'category' => $this->faker->word(),
+            'description' => $this->faker->paragraph(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => Hash::make($this->faker->name()), // password $2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi
